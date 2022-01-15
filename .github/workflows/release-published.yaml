@@ -1,0 +1,15 @@
+name: Publish Backend Package
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: show env
+        run: env
