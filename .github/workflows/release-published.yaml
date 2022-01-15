@@ -13,3 +13,5 @@ jobs:
     steps:
       - name: show env
         run: env
+      - name: tag
+        run: "echo ${{ github.ref_name }}"
