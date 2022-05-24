@@ -11,6 +11,6 @@ jobs:
     steps:
       - uses: darmiel/yadwh-action@v1.2
         with:
-          url: 'https://yadwh.example.com'
-          name: 'BACKEND_PROD'
-          secret: 'test123'
+          url: 'http://backend.staging.gyf.d2a.io:9830'
+          name: 'BACKEND_STAGED'
+          secret: ${{ secrets.STAGED_DEPLOY_SECRET }}
