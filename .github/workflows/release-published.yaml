@@ -1,9 +1,6 @@
 name: Publish Backend Package
 
 on:
-  release:
-    types:
-      - published
   workflow_dispatch:
 
 jobs:
@@ -11,7 +8,8 @@ jobs:
     name: Debug
     runs-on: ubuntu-latest
     steps:
-      - name: show env
-        run: env
-      - name: tag
-        run: "echo ${{ github.ref_name }}"
+      - uses: darmiel/yadwh-action@v1
+        with:
+          url: 'https://yadwh.example.com'
+          name: 'BACKEND_PROD'
+          secret: 'test123'
