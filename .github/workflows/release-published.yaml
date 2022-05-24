@@ -9,7 +9,7 @@ jobs:
     name: Debug
     runs-on: ubuntu-latest
     steps:
-      - uses: darmiel/yadwh-action@v1.2
+      - uses: darmiel/yadwh-action@v1
         with:
           url: 'http://backend.staging.gyf.d2a.io:9830'
           name: 'BACKEND_STAGED'
