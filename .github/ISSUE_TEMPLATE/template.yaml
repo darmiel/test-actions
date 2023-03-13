@@ -10,7 +10,7 @@ assignees: TomRomeo, darmiel
 body:
   - type: markdown
     attributes:
-      value: Thank you so much for your help to make this list even better! 💖
+      value: "> **Note**: Thank you so much for your help to make this list even better! 💖"
       
   - type: input
     id: affected-project
