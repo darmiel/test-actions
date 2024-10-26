@@ -48,6 +48,10 @@ jobs:
       - name: Verify the contents of the .github/outputs/linter_output.txt file
         run: cat .github/outputs/linter_output.txt
 
+      - name: Set Linter Output as Environment Variable
+        id: set-linter-output
+        run: echo "LINTER_OUTPUT=$(cat .github/outputs/linter_output.txt)" >> $GITHUB_ENV
+
       - name: Find Comment from Linter
         uses: peter-evans/find-comment@v3
         id: fc
@@ -79,12 +83,12 @@ jobs:
             <!-- [lint] -->
             Thank you for your contribution! ❤️
             
-            We use an automated linter to ensure code consistency and quality. During the review of the `.ir` files in your pull request, it found the following issue(s):
+            We use an automated linter to ensure consistency and quality. During the review of the `.ir` files in your pull request, it found the following issue(s):
             
             <details>
-              <summary>🐛 Linter Result (Click to open)</summary>
+              <summary><strong>🐛 Linter Result</strong> <i>(Click to open)</i></summary>
               
-              $(cat .github/outputs/linter_output.txt)
+              ${{ env.LINTER_OUTPUT }}
               
             </details>
 
