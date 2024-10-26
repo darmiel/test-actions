@@ -50,7 +50,7 @@ jobs:
 
       - name: Set Linter Output as Environment Variable
         id: set-linter-output
-        run: echo "LINTER_OUTPUT=$(cat .github/outputs/linter_output.txt)" >> $GITHUB_ENV
+        run: echo "LINTER_OUTPUT=$(base64 .github/outputs/linter_output.txt)" >> $GITHUB_ENV
 
       - name: Find Comment from Linter
         uses: peter-evans/find-comment@v3
@@ -88,7 +88,7 @@ jobs:
             <details>
               <summary><strong>🐛 Linter Result</strong> <i>(Click to open)</i></summary>
               
-              ${{ env.LINTER_OUTPUT }}
+              ${{ steps.set-linter-output.outputs.LINTER_OUTPUT | fromBase64 }}
               
             </details>
 
