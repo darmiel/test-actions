@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: 'darmiel/fff-ir-lint'
+          ref: feat/read-json-files
           path: fff-ir-lint
       
       - name: Get changed files
@@ -42,7 +43,7 @@ jobs:
       - name: Run Linter
         id: run-linter
         continue-on-error: true
-        run: LINTER_CONFIG=.fff-ir-lint.json python fff-ir-lint/main.py github2 json=.github/outputs/added_files.json | tee linter_output.txt
+        run: LINTER_CONFIG=.fff-ir-lint.json python fff-ir-lint/main.py github2 json:.github/outputs/added_files.json | tee linter_output.txt
 
       - name: Find Comment from Linter
         uses: peter-evans/find-comment@v3
@@ -52,7 +53,7 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: '<!-- [lint] -->'
         
-      - name: Create or update comment if linter found errors
+      - name: Create or update comment if linter found no errors
         uses: peter-evans/create-or-update-comment@v4
         if: ${{ steps.run-linter.outcome == 'success' }}
         with:
@@ -65,7 +66,7 @@ jobs:
             **The linter found no issues. 🎉**
           edit-mode: replace
         
-      - name: Create or update comment if linter found no errors
+      - name: Create or update comment if linter found errors
         uses: peter-evans/create-or-update-comment@v4
         if: ${{ steps.run-linter.outcome != 'success' }}
         with:
