@@ -18,9 +18,6 @@ jobs:
         with:
           run_id: ${{ github.event.workflow_run.id }}
           
-      - run: ls -larth
-      - run: unzip pr.zip
-      - run: ls -larth
       - run: ls -larth pr/
       
       - name: Set PR Number as Environment Variable
