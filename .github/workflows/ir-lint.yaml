@@ -36,6 +36,9 @@ jobs:
       - name: Verify the contents of the .github/outputs/added_files.json file
         run: cat .github/outputs/added_files.json
 
+      - name: list files
+        run: ls -larth .github/outputs
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
