@@ -1,8 +1,8 @@
-name: "[Lint] Comment PR"
+name: lint-comment-pr
 
 on:
   workflow_run:
-    workflows: ["[Lint] Receive PR"]
+    workflows: [lint-receive-pr]
     types:
       - completed
 
