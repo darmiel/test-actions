@@ -48,10 +48,6 @@ jobs:
       - name: Verify the contents of the .github/outputs/linter_output.txt file
         run: cat .github/outputs/linter_output.txt
 
-      - name: Set Linter Output as Environment Variable
-        id: set-linter-output
-        run: echo "LINTER_OUTPUT=$(base64 .github/outputs/linter_output.txt)" >> $GITHUB_ENV
-
       - name: Find Comment from Linter
         uses: peter-evans/find-comment@v3
         id: fc
