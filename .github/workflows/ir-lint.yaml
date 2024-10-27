@@ -36,7 +36,7 @@ jobs:
       - name: Verify the contents of the .github/outputs/added_files.json file
         run: cat .github/outputs/added_files.json
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -72,27 +72,33 @@ jobs:
 
             **The linter found no issues. 🎉**
           edit-mode: replace
-        
+      
+      - name: Create comment body if linter found errors
+        if: ${{ steps.run-linter.outcome != 'success' }}
+        run: |
+          cat <<EOF > .github/outputs/comment_body.txt
+          <!-- [lint] -->
+          Thank you for your contribution! ❤️
+          
+          We use an automated linter to ensure consistency. During the review of the \`.ir\` files in your pull request, it found the following issue(s):
+          
+          <details>
+            <summary><strong>🐛 Linter Result</strong> <i>(Click to open)</i></summary>
+            
+            $(cat .github/outputs/linter_output.txt)
+          
+          </details>
+          
+          Please address these issues and update your pull request. Once the problems are resolved, the linter will re-check your changes.
+          EOF
+      
       - name: Create or update comment if linter found errors
         uses: peter-evans/create-or-update-comment@v4
         if: ${{ steps.run-linter.outcome != 'success' }}
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            <!-- [lint] -->
-            Thank you for your contribution! ❤️
-            
-            We use an automated linter to ensure consistency and quality. During the review of the `.ir` files in your pull request, it found the following issue(s):
-            
-            <details>
-              <summary><strong>🐛 Linter Result</strong> <i>(Click to open)</i></summary>
-              
-              ${{ steps.set-linter-output.outputs.LINTER_OUTPUT | fromBase64 }}
-              
-            </details>
-
-            Please address these issues and update your pull request. Once the problems are resolved, the linter will re-check your changes.
+          body-path: .github/outputs/comment_body.txt
           edit-mode: replace
 
       - name: Fail Pipeline if Linter Found Issues
