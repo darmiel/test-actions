@@ -21,7 +21,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: 'darmiel/fff-ir-lint'
-          ref: feat/read-json-files
           path: fff-ir-lint
       
       - name: Get changed files
