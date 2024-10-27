@@ -16,7 +16,7 @@ jobs:
       - name: "Download artifact"
         uses: dawidd6/action-download-artifact@v6
         with:
-          run-id: ${{ github.event.workflow_run.id }}
+          run_id: ${{ github.event.workflow_run.id }}
           
       - run: ls -larth
       - run: unzip pr.zip
