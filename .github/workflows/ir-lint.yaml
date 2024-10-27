@@ -58,6 +58,9 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: '<!-- [lint] -->'
+
+      - run: |
+          echo "Head: ${{ github.event.pull_request.head.repo.full_name }}, Base: ${{ github.event.pull_request.base.repo.full_name }}"
         
       - name: Create or update comment if linter found no errors
         uses: peter-evans/create-or-update-comment@v4
