@@ -1,4 +1,4 @@
-name: "lint-receive-pr"
+name: lint-receive-pr
 
 on:
   pull_request:
