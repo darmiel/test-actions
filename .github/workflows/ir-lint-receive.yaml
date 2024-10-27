@@ -1,4 +1,4 @@
-name: "🧐 Checking IR Files"
+name: "[Lint] Receive PR"
 
 on:
   pull_request:
@@ -9,10 +9,6 @@ jobs:
   lint:
     name: "🐛 Looking for issues"
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      issues: write
-      statuses: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,28 +50,16 @@ jobs:
       - name: Verify the contents of the .github/outputs/linter_output.txt file
         run: cat .github/outputs/linter_output.txt
 
-      - name: Find Comment from Linter
-        uses: peter-evans/find-comment@v3
-        if: ${{ github.event.pull_request.base.repo.full_name == 'darmiel/test-actions' }} # does not work in forks
-        id: fc
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '<!-- [lint] -->'
-  
-      - name: Create or update comment if linter found no errors
-        uses: peter-evans/create-or-update-comment@v4
-        if: ${{ steps.run-linter.outcome == 'success' && github.event.pull_request.base.repo.full_name == 'darmiel/test-actions' }}
-        with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            <!-- [lint] -->
-            Thank you for your contribution! ❤️
+      - name: Create comment body if linter found no errors
+        if: ${{ steps.run-linter.outcome == 'success' }}
+        run: |
+          cat <<EOF > .github/outputs/comment_body.txt
+          <!-- [lint] -->
+          Thank you for your contribution! ❤️
 
-            **The linter found no issues. 🎉**
-          edit-mode: replace
-      
+          **The linter found no issues. 🎉**
+          EOF
+
       - name: Create comment body if linter found errors
         if: ${{ steps.run-linter.outcome != 'success' }}
         run: |
@@ -94,15 +78,12 @@ jobs:
           
           Please address these issues and update your pull request. Once the problems are resolved, the linter will re-check your changes.
           EOF
-      
-      - name: Create or update comment if linter found errors
-        uses: peter-evans/create-or-update-comment@v4
-        if: ${{ steps.run-linter.outcome != 'success' && github.event.pull_request.base.repo.full_name == 'darmiel/test-actions' }}
+
+      - name: Save comment body
+        uses: actions/upload-artifact@v4
         with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body-path: .github/outputs/comment_body.txt
-          edit-mode: replace
+          name: comment-body.txt
+          path: .github/outputs/comment_body.txt
 
       - name: Fail Pipeline if Linter Found Issues
         if: ${{ steps.run-linter.outcome == 'failure' }}
