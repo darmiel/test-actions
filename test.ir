@@ -1,14 +1,14 @@
 Filetype: IR signals file
 Version: 1
 #
-# ARRIS VIP 2952 V2
+# ARRIS VIP 2952 V2 eee
 # tested with unleashed 0.50e
 # added all keys
 #
 name: Power
 type: raw
 frequency: 56000
-duty_cycle: 0.33d0000
+duty_cycle: 0.330000
 data: 320 640 640 640 320 320 640 640 640 640 320 320 320 320 320 320 320 320 320 320 320 320 320 320 320 320 320 320 640 640 640 320 320 640 320
 #
 name: Menu
